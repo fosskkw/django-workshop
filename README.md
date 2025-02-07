@@ -1,36 +1,51 @@
-# Django Meme Gallery Workshop
+# Section 1: Project Setup
 
-This repository is designed for a code-along workshop on building a simple meme gallery website using Django.  Each section of the tutorial is a separate branch.
+This section covers setting up your Django project and running the development server.
 
-## Prerequisites
+## Steps
 
-*   Python 3.6+
-*   pip
-*   A text editor (VS Code, Sublime Text, Vim, etc.)
-*   Basic understanding of Python and HTML
+1.  **Create a Virtual Environment:**
 
-## Setup
+    This isolates your project's dependencies. Run the following command:
 
-1. Clone this repository: `git clone https://github.com/aditya-borse/meme-gallery-workshop.git`
-2. Change into the project directory: `cd meme-gallery-workshop`
-3. Start following the tutorial from the `01-project-setup` branch.
+    ```bash
+    python3 -m venv venv
+    ```
 
-## Branching
+    Activate the environment:
 
-Each section of the tutorial corresponds to a branch.  To follow along:
+    ```bash
+    # Windows
+    venv\Scripts\activate
+    # macOS and Linux
+    source venv/bin/activate
+    ```
+    You should see `(venv)` in your terminal prompt.
 
-1.  `git checkout <branch_name>` (e.g., `git checkout 01-project-setup`)
-2.  Read the README for that branch.
-3.  Follow the instructions and write the code.
-4.  Run the server (`python manage.py runserver`) to test your progress.
+2.  **Install Django:**
 
-## Branches
+    ```bash
+    pip install django
+    ```
 
-*   `01-project-setup`: Setting up the Django project.
-*   `02-create-app-and-model`: Creating the `memes` app and `Meme` model.
-*   `03-admin-interface`: Setting up the Django admin.
-*   `04-basic-view-and-template`: Creating the first view and template.
-*   `05-static-and-media-files`: Configuring static and media files.
-*   `06-user-uploads`: Implementing user uploads.
-*   `07-basic-styling`: (Optional) Adding basic CSS.
-*   `main`: The final, complete code.
+3.  **Create the Django Project:**
+
+    ```bash
+    django-admin startproject meme_gallery
+    cd meme_gallery
+    ```
+
+4.  **Run the Development Server:**
+
+    ```bash
+    python manage.py runserver
+    ```
+
+    Open your browser and go to `http://127.0.0.1:8000/`. You should see the Django welcome page!  Press Ctrl+C to stop the server.
+
+## Explanation
+
+*   **Virtual Environment:**  Keeps project dependencies separate, preventing conflicts.
+*   **`django-admin startproject`:** Creates the basic project structure.
+*   **`manage.py`:**  A command-line utility for managing your Django project.
+*   **`runserver`:**  Starts the built-in development server for testing.
