@@ -30,7 +30,7 @@ Each section of the tutorial corresponds to a branch.  To follow along:
 *   `02-create-app-and-model`: Creating the `memes` app and `Meme` model.
 *   `03-admin-interface`: Setting up the Django admin.
 *   `04-basic-view-and-template`: Creating the first view and template.
-*   `05-static-and-media-files`: Configuring static and media files.
+*   `05-static-files`: Configuring static files.
 *   `06-user-uploads`: Implementing user uploads.
-*   `07-basic-styling`: (Optional) Adding basic CSS.
+*   `07-basic-styling-and-timezone`: (Optional) Adding basic CSS and timezone conversion.
 *   `complete-code`: The final, complete code of the meme gallery app.
