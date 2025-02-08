@@ -1,3 +1,6 @@
 from django.shortcuts import render
+from .models import Meme
 
-# Create your views here.
+def meme_list(request):
+    memes = Meme.objects.all()
+    return render(request, 'memes/meme_list.html', {'memes': memes})

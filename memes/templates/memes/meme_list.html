@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Meme Gallery</title>
+</head>
+<body>
+    <h1>Meme Gallery</h1>
+
+    {% for meme in memes %}
+        <div>
+            <h2>{{ meme.title }}</h2>
+            <img src="{{ meme.image.url }}" alt="{{ meme.title }}" style="max-width: 400px;">
+            <p>Uploaded at: {{ meme.uploaded_at }}</p>
+        </div>
+    {% endfor %}
+</body>
+</html>
