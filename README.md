@@ -33,4 +33,4 @@ Each section of the tutorial corresponds to a branch.  To follow along:
 *   `05-static-and-media-files`: Configuring static and media files.
 *   `06-user-uploads`: Implementing user uploads.
 *   `07-basic-styling`: (Optional) Adding basic CSS.
-*   `main`: The final, complete code.
+*   `complete-code`: The final, complete code of the meme gallery app.
