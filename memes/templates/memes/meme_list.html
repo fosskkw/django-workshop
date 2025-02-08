@@ -1,8 +1,10 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 
 <head>
     <title>Meme Gallery</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 
 <body>
@@ -16,12 +18,25 @@
     </form>
 
     {% for meme in memes %}
-    <div>
+    <div class="meme">
         <h2>{{ meme.title }}</h2>
         <img src="{{ meme.image.url }}" alt="{{ meme.title }}" style="max-width: 400px;">
-        <p>Uploaded at: {{ meme.uploaded_at }}</p>
+        <p>Uploaded at: <span class="datetime" data-utc="{{ meme.uploaded_at|date:'c' }}"></span></p>
     </div>
     {% endfor %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const datetimeSpans = document.querySelectorAll('.datetime');
+
+            datetimeSpans.forEach(span => {
+                const utcString = span.dataset.utc;
+                const date = new Date(utcString);
+                const formattedDate = date.toLocaleString();
+                span.textContent = formattedDate;
+            });
+        });
+    </script>
 </body>
 
 </html>

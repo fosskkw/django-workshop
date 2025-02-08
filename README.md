@@ -1,54 +1,69 @@
-# Section 6: User Uploads
+# Section 7: Basic Styling and Frontend Timezone Conversion
 
-This section implements user uploads using forms.
+This section adds basic CSS for styling and implements frontend timezone conversion using JavaScript.
 
 ## Steps
 
-1.  **Create `forms.py`:**
+1.  **Create `style.css`:**
 
-    Create `memes/forms.py` and add:
+    Create a file `static/css/style.css` and add the following styles:
 
-    ```python
-    from django import forms
-    from .models import Meme
+    ```css
+    body {
+        font-family: sans-serif;
+        margin: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 
-    class MemeForm(forms.ModelForm):
-        class Meta:
-            model = Meme
-            fields = ['title', 'image']
+    h1 {
+        color: navy;
+    }
+
+    .meme {
+        border: 1px solid #ddd;
+        padding: 10px;
+        margin-bottom: 10px;
+        width: fit-content;
+    }
+
+    .meme img {
+        display: block;  
+        margin: 0 auto; 
+    }
+
+    form {
+        width: fit-content;
+    }
     ```
 
-2.  **Update `views.py`:**
+2.  **Link to the CSS in `meme_list.html`:**
 
-    Replace the content of `memes/views.py` with:
-
-    ```python
-    from django.shortcuts import render, redirect
-    from .models import Meme
-    from .forms import MemeForm
-
-    def meme_list(request):
-        if request.method == 'POST':
-            form = MemeForm(request.POST, request.FILES)
-            if form.is_valid():
-                form.save()
-                return redirect('meme_list')
-        else:
-            form = MemeForm()
-
-        memes = Meme.objects.all()
-        return render(request, 'memes/meme_list.html', {'memes': memes, 'form': form})
-    ```
-
-3.  **Update `meme_list.html`:**
-
-    Add the form to `memes/templates/memes/meme_list.html`:
+    Add the following within the `<head>` section of `memes/templates/memes/meme_list.html`:
 
     ```html
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    ```
+    Add `{% load static %}` at the top of the file.
+
+    ```html
+    {% load static %}
+    <!DOCTYPE html>
+    ...
+    ```
+
+3.  **Add Frontend Timezone Conversion:**
+
+    Modify `memes/templates/memes/meme_list.html` to include JavaScript for converting UTC datetimes:
+
+    ```html
+    {% load static %}
     <!DOCTYPE html>
     <html>
     <head>
         <title>Meme Gallery</title>
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
     </head>
     <body>
         <h1>Meme Gallery</h1>
@@ -61,30 +76,37 @@ This section implements user uploads using forms.
         </form>
 
         {% for meme in memes %}
-            <div>
-                <h2>{{ meme.title }}</h2>
-                <img src="{{ meme.image.url }}" alt="{{ meme.title }}" style="max-width: 400px;">
-                <p>Uploaded at: {{ meme.uploaded_at }}</p>
-            </div>
+        <div class="meme">
+            <h2>{{ meme.title }}</h2>
+            <img src="{{ meme.image.url }}" alt="{{ meme.title }}" style="max-width: 400px;">
+            <p>Uploaded at: <span class="datetime" data-utc="{{ meme.uploaded_at|date:'c' }}"></span></p>
+        </div>
         {% endfor %}
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const datetimeSpans = document.querySelectorAll('.datetime');
+
+                datetimeSpans.forEach(span => {
+                    const utcString = span.dataset.utc;
+                    const date = new Date(utcString);
+                    const formattedDate = date.toLocaleString();
+                    span.textContent = formattedDate;
+                });
+            });
+        </script>
     </body>
     </html>
     ```
 
-4.  Run the server and test the upload functionality.
+5.  Run the server and see the updated styling and localized timestamps.
 
 ## Explanation
 
-*   **`forms.py`:**  Defines the `MemeForm` using `forms.ModelForm`.
-    *   `Meta`: Specifies the model and fields.
-*   **`views.py` (updates):**
-    *   `request.method == 'POST'` : Checks for form submission.
-    *   `request.FILES`: Contains uploaded file data.
-    *   `form.is_valid()`: Validates the form data.
-    *   `form.save()`: Saves the data to the database.
-    *   `redirect()`: Redirects to the meme list after successful upload.
-*   **`meme_list.html` (updates):**
-    *   `method="post"`:  Required for form submissions.
-    *   `enctype="multipart/form-data"`: *Essential* for file uploads.
-    *   `{% csrf_token %}`: CSRF protection (required for POST forms).
-    *   `{{ form.as_p }}`: Renders the form fields.
+*   **`static/css/style.css`:** Contains the CSS rules.
+*   **`<link rel="stylesheet" ...>`:** Links the HTML to the CSS file.
+*   **Frontend Timezone Conversion:**
+    *   We use a `<span>` element with the class `datetime` and a `data-utc` attribute to store the UTC datetime string (formatted using `|date:'c'`).
+    *   JavaScript code selects all elements with the class `datetime`.
+    *   For each element, it gets the UTC string, creates a `Date` object, formats it using `toLocaleString()`, and sets the `<span>`'s text content to the formatted date.
+    *   The `Date` object automatically handles the conversion to the browser's local timezone.
