@@ -1,63 +1,67 @@
-# Section 2: Create App and Model
+# Section 3: Admin Interface and Media File Configuration
 
-This section covers creating a Django app and defining the `Meme` model.
+This section covers setting up the Django admin interface and configuring media file handling.
 
 ## Steps
 
-1.  **Create the `memes` App:**
+1.  **Register the `Meme` Model:**
 
-    ```bash
-    python manage.py startapp memes
-    ```
-
-2.  **Register the App:**
-
-    Open `meme_gallery/settings.py` and add `'memes'` to the `INSTALLED_APPS` list:
+    Open `memes/admin.py` and add:
 
     ```python
-    INSTALLED_APPS = [
-        # ... other apps ...
-        'memes',  # Add this line
-    ]
+    from django.contrib import admin
+    from .models import Meme
+
+    admin.site.register(Meme)
     ```
 
-3.  **Define the `Meme` Model:**
+2.  **Create a Superuser:**
 
-    Open `memes/models.py` and add the following code:
+    ```bash
+    python manage.py createsuperuser
+    ```
+    Follow the prompts.
+
+3.  **Configure Media File Settings:**
+
+    Open `meme_gallery/settings.py` and add these settings at the *bottom* of the file:
 
     ```python
-    from django.db import models
-
-    class Meme(models.Model):
-        title = models.CharField(max_length=200)
-        image = models.ImageField(upload_to='memes/')
-        uploaded_at = models.DateTimeField(auto_now_add=True)
-
-        def __str__(self):
-            return self.title
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = BASE_DIR / 'media'
     ```
 
-4.  **Install Pillow** (for image processing):
+4.  **Create the `media` Directory:**
+
+    Create a directory named `media` at the *root* level of your project (next to `manage.py` and the `meme_gallery` directory):
 
     ```bash
-    pip install Pillow
+    mkdir media
     ```
 
-5.  **Create Migrations:**
+5.  **Serve Media Files in Development:**
+    Add the following to `meme_gallery/urls.py`
 
-    ```bash
-    python manage.py makemigrations
-    python manage.py migrate
+    ```python
+    from django.conf import settings # Add this at the top if it is not present
+    from django.conf.urls.static import static # Add this at the top
+    from django.contrib import admin
+    from django.urls import path, include
+
+    urlpatterns = [
+        path('admin/', admin.site.urls),
+    ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # Add this line
     ```
+
+6.  **Access the Admin:**
+
+    Run the server (`python manage.py runserver`) and go to `http://127.0.0.1:8000/admin/`. Log in. You should now be able to add memes, and the uploaded images will be stored in the `media/memes/` directory.
 
 ## Explanation
 
-*   **App:**  A module within a project, organizing code for a specific feature.
-*   **Model:**  Defines the data structure (database table).
-    *   `CharField`: For text.
-    *   `ImageField`: For image files (`upload_to` specifies where to store them).
-    *   `DateTimeField`: For date and time (`auto_now_add=True` sets the timestamp automatically).
-    *   `__str__`:  Provides a human-readable representation of the object.
-*   **Migrations:**  Django's way of managing changes to the database schema.
-    *   `makemigrations`: Creates migration files.
-    *   `migrate`: Applies migrations to the database.
+*   **Admin Interface:**  A built-in interface for managing your data.
+*   **`admin.site.register()`:** Makes your model manageable in the admin.
+*   **Superuser:** An administrator account.
+*   **`MEDIA_URL`:** The URL prefix for accessing media files in your templates (e.g., `{{ meme.image.url }}`).
+*   **`MEDIA_ROOT`:**  The *absolute path* to the directory where media files will be stored on your server's file system.
+*   **`static(settings.MEDIA_URL, ...)`:**  This tells Django's development server how to serve media files during development.  This is *not* needed (and shouldn't be used) in a production environment.
