@@ -1,17 +1,27 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Meme Gallery</title>
 </head>
+
 <body>
     <h1>Meme Gallery</h1>
 
+    <h2>Upload a Meme</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Upload</button>
+    </form>
+
     {% for meme in memes %}
-        <div>
-            <h2>{{ meme.title }}</h2>
-            <img src="{{ meme.image.url }}" alt="{{ meme.title }}" style="max-width: 400px;">
-            <p>Uploaded at: {{ meme.uploaded_at }}</p>
-        </div>
+    <div>
+        <h2>{{ meme.title }}</h2>
+        <img src="{{ meme.image.url }}" alt="{{ meme.title }}" style="max-width: 400px;">
+        <p>Uploaded at: {{ meme.uploaded_at }}</p>
+    </div>
     {% endfor %}
 </body>
+
 </html>
