@@ -12,7 +12,7 @@ This repository is designed for a code-along workshop on building a simple meme 
 ## If you want to navigate through the branches locally
 
 1. Clone this repository: `git clone https://github.com/fosskkw/django-workshop.git`
-2. Change into the project directory: `cd meme-gallery-workshop`
+2. Change into the project directory: `cd django-workshop`
 3. Start following the tutorial from the `01-project-setup` branch.
 
 ## Branching
