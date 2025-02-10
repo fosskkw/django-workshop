@@ -9,9 +9,9 @@ This repository is designed for a code-along workshop on building a simple meme 
 *   A text editor (VS Code, Sublime Text, Vim, etc.)
 *   Basic understanding of Python and HTML
 
-## Setup
+## If you want to navigate through the branches locally
 
-1. Clone this repository: `git clone https://github.com/aditya-borse/meme-gallery-workshop.git`
+1. Clone this repository: `git clone https://github.com/fosskkw/django-workshop.git`
 2. Change into the project directory: `cd meme-gallery-workshop`
 3. Start following the tutorial from the `01-project-setup` branch.
 
